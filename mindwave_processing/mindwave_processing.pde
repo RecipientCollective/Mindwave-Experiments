@@ -22,6 +22,7 @@ ____ ____ ____ _ ___  _ ____ _  _ ___    ____ ____ _    _    ____ ____ ___ _ _  
 |        http://processing.org                                                       |
 |        http://blog.blprnt.com/blog/blprnt/processing-json-the-new-york-times       |
 |        https://github.com/agoransson/JSON-processing                               |
+|        http://recipient.cc
 |                                                                                    |
 +------------------------------------------------------------------------------------+
 */
@@ -32,8 +33,24 @@ import org.json.*;
 Client myBrainwave; 
 ControlP5 controlP5;
 
-String dataIn; 
+
+
 Boolean Debug = false;
+Boolean DynamicRange = false;
+
+//setting global variables to make range of slider dynamically based on input range if wanted
+//set here your maxvalue for sliders
+int Max1 = 0;
+int Max2 = 0;
+int Max3 = 0;
+int Max4 = 0;
+int Max5 = 0;
+int Max6 = 0;
+int Max7 = 0;
+int Max8 = 0;
+
+//strings 4 data in
+String dataIn; 
  
 void setup() { 
   size(850, 650); 
@@ -41,18 +58,18 @@ void setup() {
   controlP5 = new ControlP5(this);
   
   //min,max,start,x,y,larghezza ,altezza
-  
-  controlP5.addSlider("delta",0,300000,0,10,10,750,50).setId(1);
-  controlP5.addSlider("theta",0,300000,0,10,64,750,50).setId(2);
-  controlP5.addSlider("lowAlpha",0,300000,0,10,118,750,50).setId(3);
-  controlP5.addSlider("highAlpha",0,300000,0,10,172,750,50).setId(4);
-  controlP5.addSlider("lowBeta",0,300000,0,10,226,750,50).setId(5);
-  controlP5.addSlider("highBeta",0,300000,0,10,280,750,50).setId(6);
-  controlP5.addSlider("lowGamma",0,300000,0,10,334,750,50).setId(7);
-  controlP5.addSlider("highGamma",0,300000,0,10,388,750,50).setId(8);
+  controlP5.addSlider("delta",0,Max1,0,10,10,750,50).setId(1);
+  controlP5.addSlider("theta",0,Max2,0,10,64,750,50).setId(2);
+  controlP5.addSlider("lowAlpha",0,Max3,0,10,118,750,50).setId(3);
+  controlP5.addSlider("highAlpha",0,Max4,0,10,172,750,50).setId(4);
+  controlP5.addSlider("lowBeta",0,Max5,0,10,226,750,50).setId(5);
+  controlP5.addSlider("highBeta",0,Max6,0,10,280,750,50).setId(6);
+  controlP5.addSlider("lowGamma",0,Max7,0,10,334,750,50).setId(7);
+  controlP5.addSlider("highGamma",0,Max8,0,10,388,750,50).setId(8);
   controlP5.addSlider("attention",0,100,0,10,442,750,50).setId(9);
   controlP5.addSlider("meditation",0,100,0,10,496,750,50).setId(10);
-  controlP5.addToggle("DebugMode",false,10,550,50,50);
+  controlP5.addToggle("DebugMode",Debug,10,550,50,50);
+  controlP5.addToggle("DynamicRangeMode",DynamicRange,70,550,50,50);
   // Connect to the local machine at port 13854.
   //we use socket connection.
   // This example will not run if you haven't
@@ -74,7 +91,58 @@ void draw() {
     JSONObject results = nytData.getJSONObject("eegPower");
     JSONObject resultsM = nytData.getJSONObject("eSense");
     //JSONObject resultsB = nytData.getJSONObject("blinkStrength");
-    //int total = nytData.length();
+    if(DynamicRange){
+      
+    int delta = results.getInt("delta");
+    if (delta > Max1){
+    Max1=delta;
+    controlP5.controller("delta").setMax(delta);
+    }
+    controlP5.controller("delta").setValue(delta);
+    int theta = results.getInt("theta");
+    if (theta > Max2){
+    Max2=theta;
+    controlP5.controller("theta").setMax(theta);
+    }
+    controlP5.controller("theta").setValue(theta);
+    int lowAlpha = results.getInt("lowAlpha");
+    if (lowAlpha > Max3){
+     Max3 = lowAlpha;
+     controlP5.controller("lowAlpha").setMax(lowAlpha);
+    }
+    controlP5.controller("lowAlpha").setValue(lowAlpha);
+    int highAlpha = results.getInt("highAlpha");
+    if (highAlpha > Max4){
+    Max4 = highAlpha;
+    controlP5.controller("highAlpha").setMax(highAlpha);
+    }
+    controlP5.controller("highAlpha").setValue(highAlpha);
+    int lowBeta = results.getInt("lowBeta");
+    if (lowBeta > Max5){
+    Max5 = lowBeta;
+    controlP5.controller("lowBeta").setMax(lowBeta);
+    }
+    controlP5.controller("lowBeta").setValue(lowBeta);
+    int highBeta = results.getInt("highBeta");
+    if (highBeta > Max6){
+    Max5 = highBeta;
+    controlP5.controller("highBeta").setMax(highBeta);
+    }
+    controlP5.controller("highBeta").setValue(highBeta);
+    int lowGamma = results.getInt("lowGamma");
+    if (lowGamma > Max7){
+    Max7 = lowGamma;
+    controlP5.controller("lowGamma").setMax(lowGamma);
+    }
+    controlP5.controller("lowGamma").setValue(lowGamma);
+    int highGamma = results.getInt("highGamma");
+    if (highGamma > Max8){
+    Max8 = lowGamma;
+    controlP5.controller("highGamma").setMax(highGamma);
+    }
+    controlP5.controller("highGamma").setValue(highGamma);
+    
+    }else{
     int delta = results.getInt("delta");
     controlP5.controller("delta").setValue(delta);
     int theta = results.getInt("theta");
@@ -91,19 +159,15 @@ void draw() {
     controlP5.controller("lowGamma").setValue(lowGamma);
     int highGamma = results.getInt("highGamma");
     controlP5.controller("highGamma").setValue(highGamma);
+    }
     int attention = resultsM.getInt("attention");
     controlP5.controller("attention").setValue(attention);
     int meditation = resultsM.getInt("meditation");
     controlP5.controller("meditation").setValue(meditation);
-    
-    
-    
-    //println(highGamma);
-    
     } catch (JSONException e) {
-    if (Debug){
-println ("There was an error parsing the JSONObject.");
-println(e);    
+              if (Debug){
+              println ("There was an error parsing the JSONObject.");
+              println(e);    
               } 
     }
 }
@@ -141,5 +205,15 @@ void DebugMode(boolean theFlag) {
   } else {
     Debug = false;
     println("DEBUG TOGGLE OFF.");
+  }
+}
+
+void DynamicRangeMode(boolean theFlag) {
+  if(theFlag==true) {
+    DynamicRange = true;
+    println("DYNAMIC RANGE TOGGLE ON.");
+  } else {
+    DynamicRange = false;
+    println("DYNAMIC RANGE TOGGLE OFF.");
   }
 }
