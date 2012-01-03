@@ -4,7 +4,7 @@ ____ ____ ____ _ ___  _ ____ _  _ ___    ____ ____ _    _    ____ ____ ___ _ _  
 |  \ |___ |___ | |    | |___ | \|  |     |___ |__| |___ |___ |___ |___  |  |  \/  |___
 
 +------------------------------------------------------------------------------------+
-|          Mindwave processing experiment  by Recipient.cc colelctive                |
+|          Mindwave processing experiment  by Recipient.cc collective                |
 |        This program is free software: you can redistribute it and/or modify        |
 |        it under the terms of the GNU General Public License as published by        |
 |        the Free Software Foundation, either version 3 of the License, or           |
@@ -21,15 +21,22 @@ ____ ____ ____ _ ___  _ ____ _  _ ___    ____ ____ _    _    ____ ____ ___ _ _  
 |        REFERENCES                                                                  |
 |        http://processing.org                                                       |
 |        http://blog.blprnt.com/blog/blprnt/processing-json-the-new-york-times       |
+|        http://recipient.cc                                                         |
+|                                                                                    | 
+|        LIBRARIES                                                                   |
+|        JSON Processing Library. | http://www.blprnt.com/processing/json.zip        |
+|        an alternative library                                                      |
 |        https://github.com/agoransson/JSON-processing                               |
-|        http://recipient.cc
 |                                                                                    |
 +------------------------------------------------------------------------------------+
 */
 
 import controlP5.*;
 import processing.net.*; 
+// I am assuming here that you are using the Processing 1.0 release or higher. Libraries are added to your processing sketchbook folder (~user/Documents/Processing on a Mac) in a directory called ‘libraries’. 
+//If it doesn’t already exist, create it, and drop the unzipped ‘json’ folder inside)
 import org.json.*;
+//
 Client myBrainwave; 
 ControlP5 controlP5;
 
