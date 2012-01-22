@@ -41,7 +41,8 @@ Client myBrainwave;
 ControlP5 controlP5;
 
 
-
+int[] xvals;
+int arrayindex = 0;
 Boolean Debug = false;
 Boolean DynamicRange = false;
 
@@ -63,6 +64,8 @@ void setup() {
   size(850, 650); 
   background(102);
   controlP5 = new ControlP5(this);
+  //graph render array
+  xvals = new int[width];
   
   //min,max,start,x,y,larghezza ,altezza
   controlP5.addSlider("delta",0,Max1,0,10,10,750,50).setId(1);
@@ -98,6 +101,20 @@ void draw() {
     JSONObject results = nytData.getJSONObject("eegPower");
     JSONObject resultsM = nytData.getJSONObject("eSense");
     //JSONObject resultsB = nytData.getJSONObject("blinkStrength");
+    
+    //shift array left by one
+for(int i=1; i<width; i++) { 
+xvals[i-1] = xvals[i]; 
+} 
+// Add the new values to the end of the array 
+// read potentiometer (0..1024), divide by four (0..255)
+// to stay within canvas drawing limits
+xvals[width-1] = results.getInt("delta"); 
+for(int i=1; i<width; i++) {
+stroke(255);
+point(i, 100-xvals[i]);
+}
+    
     if(DynamicRange){
       
     int delta = results.getInt("delta");
